@@ -2,19 +2,11 @@
 #include <stdio.h>
 #include <complex.h>
 
-void print(int i, complex double x, complex double fout, int digits) {
+void print(int i, complex double x, complex double R, int digits) {
     printf("Iterações: %d\n", i);
     printf("Raiz: %.*lf %+.*lfi\n", digits, creal(x), digits, cimag(x));
     printf("Conjugado: %.*lf %+.*lfi\n", digits, creal(x), digits, -cimag(x));
-    printf("Precisao: %g %+gi\n", creal(fout), cimag(fout));
-}
-
-double function(int n, double a[], complex double x) {
-    complex double result = 0;
-    for (int i = 0; i <= n; i++) {
-        result += a[i] * cpow(x, n - i);
-    }
-    return result;
+    printf("Precisao: %g\n", cabs(R));
 }
 
 void birgeVieta(int n, double a[], complex double x0, double error) {
@@ -36,11 +28,9 @@ void birgeVieta(int n, double a[], complex double x0, double error) {
 
         out = x0 - R/R1;
         x0 = out;
-        fout = function(n, a, x0);
-        printf("b: %lf \n c: %lf\n\n", creal(R), creal(R1));
-    } while(cabs(fout) > error);
+    } while(cabs(R) > error);
     
-    print(i, x0, fout, 20);
+    print(i, x0, R, 20);
 }
 
 int main() {
