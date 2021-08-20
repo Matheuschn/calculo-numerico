@@ -28,7 +28,7 @@ void printVector(int n, double vector[n], char* name) {
     }
 }
 
-double gaussSemPivo(int n, double a[n][n], double b[n], int o) {
+double * gaussSemPivo(int n, double a[n][n], double b[n]) {
     for (int k = 0; k < n - 1; k++) {
         for (int i = k + 1; i < n; i++) {
             double ratio = a[i][k]/a[k][k];
@@ -39,7 +39,8 @@ double gaussSemPivo(int n, double a[n][n], double b[n], int o) {
         }
     }
     
-    double x[n];
+    static double * x;
+    x = (double*) calloc(n, sizeof(double));
     x[n - 1] = b[n - 1]/a[n - 1][n - 1];
     
     for (int i = n - 2; i >= 0; i--) {
@@ -57,7 +58,7 @@ double gaussSemPivo(int n, double a[n][n], double b[n], int o) {
             r[i] += a[i][j] * x[j];
         }
     }
-    return x[o];
+    return x;
 }
 
 double derivative(int j, int d, int n, double h, double x[n]) {
@@ -69,7 +70,8 @@ double derivative(int j, int d, int n, double h, double x[n]) {
 
 void nonLinear(int n, int i, double h, double x[n]) {
     double J[n][n];
-    double F[n], S[n];
+    double F[n];
+    double * S;
     
     for (i; i > 0; i--) {
         for (int y = 0; y < n; y++) {
@@ -78,9 +80,9 @@ void nonLinear(int n, int i, double h, double x[n]) {
                 J[y][k] = derivative(y, k, n, h, x);
             }
         }
+        S = gaussSemPivo(n, J, F);
         for (int j = 0; j < n; j++) {
-            S[j] = gaussSemPivo(n, J, F, j);
-            x[j] = S[j] + x[j];
+            x[j] = *(S + j) + x[j];
         }
     }
     printVector(n, x, "Solução");
