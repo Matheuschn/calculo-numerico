@@ -50,14 +50,7 @@ double * gaussSemPivo(int n, double a[n][n], double b[n]) {
         }
         x[i] = (1/a[i][i])*(b[i] - sum);
     }
-    
-    double r[n];
-    for (int i = 0; i < n; i++) {
-        r[i] = -(b[i]);
-        for (int j = 0; j < n; j++) {
-            r[i] += a[i][j] * x[j];
-        }
-    }
+
     return x;
 }
 
